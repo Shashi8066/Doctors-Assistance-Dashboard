@@ -81,9 +81,7 @@ npm run dev
 - Add **prescription management** and **billing features**.
 - Integrate **voice-based AI assistant**.
 
-## 👨‍💻 Contributors
-- **Your Name** - Full Stack Developer
-- **[Your GitHub](https://github.com/your-profile)**
+
 
 ## 📜 License
 This project is licensed under the **MIT License**.

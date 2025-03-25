@@ -1,71 +1,93 @@
-# Welcome to your Lovable project
+# Doctors Assistance Dashboard
 
-## Project info
+## 📌 Project Overview
+The **Doctors Assistance Dashboard** is a web-based application designed to help doctors efficiently manage patient records, track appointments, and assist with daily medical tasks. The dashboard provides real-time data retrieval from a **MongoDB database**, along with authentication and AI-powered assistance features.
 
-**URL**: https://lovable.dev/projects/3188de81-2d18-4607-aadc-9246acfc8a8d
+## 🚀 Features
+- **Doctor Authentication**: Secure login system fetching doctor details from MongoDB.
+- **Dashboard Overview**: Displays total patients, today's appointments, and quick actions.
+- **Patient Management**: View and search for all registered patients.
+- **Appointment Tracking**: Displays upcoming and completed patient appointments.
+- **AI Assistant**: Provides recommendations and assistance to doctors.
+- **Sticky AI Assistant Button**: Quick access to the AI Assistant feature.
 
-## How can I edit this code?
+## 🛠 Tech Stack
+- **Frontend**: React (Vite) + TypeScript + Tailwind CSS + ShadCN Components
+- **Backend**: Node.js + Express.js + MongoDB (MongoDB Atlas)
+- **Authentication**: JSON Web Token (JWT) & LocalStorage for session handling
+- **State Management**: React Query
 
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/3188de81-2d18-4607-aadc-9246acfc8a8d) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+## 📂 Project Structure
+```
+/doctor-assistance-dashboard
+├── backend/            # Backend server files
+│   ├── server.js       # Express server with API endpoints
+│   ├── models/         # Mongoose schemas
+│   ├── routes/         # API route handlers
+│   └── db.js           # MongoDB connection setup
+├── frontend/           # Frontend React application
+│   ├── src/
+│   │   ├── components/ # UI components (Header, Cards, etc.)
+│   │   ├── pages/      # Main pages (Dashboard, Login, Patients)
+│   │   ├── services/   # API calls (api.ts)
+│   │   └── App.tsx     # Main application entry
+│   ├── public/         # Static assets
+│   ├── index.html      # Main HTML file
+│   └── vite.config.ts  # Vite configuration
+└── README.md           # Project documentation
 ```
 
-**Edit a file directly in GitHub**
+## 🔧 Setup Instructions
+### 1️⃣ Clone the Repository
+```sh
+git clone https://github.com/your-repo/doctors-assistance-dashboard.git
+cd doctors-assistance-dashboard
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### 2️⃣ Setup the Backend
+```sh
+cd backend
+npm install
+```
+- Create a `.env` file and add the MongoDB connection string:
+  ```sh
+  MONGO_URI=mongodb+srv://your-username:your-password@cluster.mongodb.net/Doctor
+  JWT_SECRET=your_secret_key
+  ```
+- Start the backend server:
+  ```sh
+  node server.js
+  ```
+  - The backend will run on `http://localhost:5002`
 
-**Use GitHub Codespaces**
+### 3️⃣ Setup the Frontend
+```sh
+cd frontend
+npm install
+npm run dev
+```
+- The frontend will be available at `http://localhost:8080`
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🔥 API Endpoints
+| Method | Endpoint                  | Description |
+|--------|---------------------------|-------------|
+| POST   | `/api/login`               | Authenticate doctors |
+| GET    | `/api/patients`            | Fetch all patients |
+| GET    | `/api/patients/count`      | Get total patient count |
+| GET    | `/api/appointments/today`  | Fetch today's appointments |
 
-## What technologies are used for this project?
+## 📌 Future Enhancements
+- Implement real-time chat for doctor-patient communication.
+- Add **prescription management** and **billing features**.
+- Integrate **voice-based AI assistant**.
 
-This project is built with .
+## 👨‍💻 Contributors
+- **Your Name** - Full Stack Developer
+- **[Your GitHub](https://github.com/your-profile)**
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 📜 License
+This project is licensed under the **MIT License**.
 
-## How can I deploy this project?
+---
+Made with ❤️ for better healthcare! 🚀
 
-Simply open [Lovable](https://lovable.dev/projects/3188de81-2d18-4607-aadc-9246acfc8a8d) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
-# Doctors-Assistance-Dashboard
-# Doctors-Assistance-Dashboard

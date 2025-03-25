@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patients List</title>
+    <!-- Include Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100">
+    <div class="container mx-auto my-10 px-4">
+      <h1 class="text-center text-3xl font-bold text-gray-800 mb-6">
+        Patients List
+      </h1>
+
+      <!-- Search Input -->
+      <div class="mb-4 flex justify-center">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search by name..."
+          class="w-1/2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+          oninput="searchPatients()"
+        />
+      </div>
+
+      <!-- Patients List -->
+      <div id="patients-container"></div>
+
+      <!-- Buttons Container -->
+      <div class="flex justify-center mt-4">
+        <!-- Load More Button -->
+        <button
+          id="load-more-btn"
+          class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700 hidden"
+          onclick="loadMore()"
+        >
+          Load More
+        </button>
+      </div>
+    </div>
+
+    <script>
+      let allPatients = []; // Stores all patient data
+      let displayedPatients = 10; // Initial display limit
+
+      // Fetch all patients from API
+      async function fetchPatients() {
+        try {
+          const response = await fetch("http://localhost:5002/patients");
+          allPatients = await response.json();
+          displayPatients(); // Show initial patients
+        } catch (error) {
+          console.error("Error fetching patients:", error);
+        }
+      }
+
+      // Display patients (limited to `displayedPatients` count)
+      function displayPatients(filteredPatients = null) {
+        const container = document.getElementById("patients-container");
+        container.innerHTML = "";
+
+        const patientsToShow = filteredPatients
+          ? filteredPatients.slice(0, displayedPatients)
+          : allPatients.slice(0, displayedPatients);
+
+        patientsToShow.forEach((patient, index) => {
+          const appointmentDate = patient.appointmentDate?.$date?.$numberLong
+            ? new Date(
+                patient.appointmentDate.$date.$numberLong
+              ).toLocaleDateString()
+            : "N/A";
+
+          const patientDiv = document.createElement("div");
+          patientDiv.classList.add("w-full", "mb-4");
+          patientDiv.innerHTML = `
+              <div class="bg-white shadow-md rounded-lg p-4">
+                  <h2 class="text-lg font-semibold text-gray-900 cursor-pointer hover:text-blue-600" 
+                      onclick="toggleDetails(${index})">
+                      ${patient.name}
+                  </h2>
+
+                  <div class="mt-2 hidden" id="patient-details-${index}">
+                      <p><strong>Age:</strong> ${patient.age.$numberInt}</p>
+                      <p><strong>Gender:</strong> ${patient.gender}</p>
+                      <p><strong>Blood Group:</strong> ${patient.bloodGroup}</p>
+                      <p><strong>Condition:</strong> ${patient.condition}</p>
+                      <p><strong>Problem:</strong> ${patient.problem}</p>
+                      <p><strong>Medical History:</strong> ${patient.medicalHistory}</p>
+                      <p><strong>Medications:</strong> ${patient.medications}</p>
+                      <p><strong>Allergies:</strong> ${patient.allergies}</p>
+                      <p><strong>Family History:</strong> ${patient.familyHistory}</p>
+                      <p><strong>Symptoms:</strong> ${patient.symptomsDescription}</p>
+                      <p><strong>Appointment Date:</strong> ${appointmentDate}</p>
+                      <p><strong>Reason:</strong> ${patient.reason}</p>
+                      <p><strong>Status:</strong> ${patient.status}</p>
+                      <p><strong>Time:</strong> ${patient.time}</p>
+                  </div>
+              </div>
+          `;
+          container.appendChild(patientDiv);
+        });
+
+        // Show or hide "Load More" button
+        const loadMoreBtn = document.getElementById("load-more-btn");
+        if (displayedPatients < allPatients.length && !filteredPatients) {
+          loadMoreBtn.classList.remove("hidden");
+        } else {
+          loadMoreBtn.classList.add("hidden");
+        }
+      }
+
+      // Load more patients (increments by 10)
+      function loadMore() {
+        displayedPatients += 10;
+        displayPatients();
+      }
+
+      // Toggle visibility of patient details
+      function toggleDetails(index) {
+        const details = document.getElementById(`patient-details-${index}`);
+        details.classList.toggle("hidden");
+      }
+
+      // Search functionality
+      function searchPatients() {
+        const searchValue = document
+          .getElementById("search-input")
+          .value.toLowerCase();
+        const filteredPatients = allPatients.filter((patient) =>
+          patient.name.toLowerCase().includes(searchValue)
+        );
+        displayedPatients = 10; // Reset display count
+        displayPatients(filteredPatients);
+      }
+
+      // Fetch patients when page loads
+      window.onload = fetchPatients;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Doctor Assistant</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    <script type="module">
+      import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai";
+
+      const genAI = new GoogleGenerativeAI(
+        "AIzaSyALWlbXC2RpSrGqzSr7Ubjm_UwSY8W7IbY"
+      );
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+      window.getAIResponse = async function () {
+        const name = document.getElementById("patientName").value.trim();
+        const query = document.getElementById("prompt").value.trim();
+        const chatBox = document.getElementById("chatBox");
+
+        if (!name || !query) return;
+
+        chatBox.innerHTML += `<div class='user-message text-right p-2 rounded-lg mb-0 max-w-xs mx-auto'>
+          <strong>You:</strong> ${query}
+        </div>`;
+        document.getElementById("prompt").value = "";
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        try {
+          const patientResponse = await axios.get(
+            `http://localhost:5002/patients/name/${name}`
+          );
+          const patientInfo = patientResponse.data;
+
+          if (!patientInfo) {
+            chatBox.innerHTML += `<div class='error-message text-center text-red-500 p-2 mb-2'>No patient found with name: ${name}</div>`;
+            return;
+          }
+
+          const fullPrompt = `Patient Details: ${JSON.stringify(
+            patientInfo,
+            null,
+            2
+          )}\n\nQuery: ${query}`;
+
+          const result = await model.generateContent({
+            contents: [{ role: "user", parts: [{ text: fullPrompt }] }],
+          });
+          const aiResponse =
+            result?.response?.candidates?.[0]?.content?.parts?.[0]?.text ||
+            "No response from AI.";
+
+          chatBox.innerHTML += `<div class='ai-message text-left p-2 rounded-lg mb-0 max-w-xs mx-auto'>
+            <strong>AI:</strong> ${aiResponse.replace(/\n/g, "<br>")}
+          </div>`;
+          chatBox.scrollTop = chatBox.scrollHeight;
+        } catch (error) {
+          chatBox.innerHTML += `<div class='error-message text-center text-red-500 p-2 mb-2'>Error generating response.</div>`;
+        }
+      };
+    </script>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 flex justify-center items-center h-screen">
+    <!-- AI Doctor Assistant Chat -->
+    <div class="chat-container bg-white p-6 rounded-lg shadow-lg w-96">
+      <h2 class="text-2xl font-bold mb-4">AI Doctor Assistant</h2>
+      <label for="patientName" class="block mb-2">Patient Name:</label>
+      <input
+        id="patientName"
+        placeholder="Enter name..."
+        class="w-full p-2 mb-4 border border-gray-300 rounded-md"
+      />
+
+      <div
+        class="chat-box h-72 overflow-y-auto border border-gray-300 rounded-md mb-4"
+        id="chatBox"
+      ></div>
+
+      <textarea
+        id="prompt"
+        placeholder="Enter your query..."
+        class="w-full p-2 mb-4 border border-gray-300 rounded-md"
+      ></textarea>
+      <button
+        onclick="getAIResponse()"
+        class="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+      >
+        Send
+      </button><br><br><br>
+      <div class="col-12 text-center mt-4">
+        <a href="http://localhost:8080/#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300">
+            ← Return Home
+        </a>
+    </div>
+    </div>
+    
+  </body>
+</html>

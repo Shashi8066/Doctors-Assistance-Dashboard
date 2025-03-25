@@ -1,0 +1,171 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 201 100% 40%; /* Medical blue */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 199 100% 37%; /* Medical teal */
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 199 84% 43%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 201 100% 40%;
+
+    --radius: 0.8rem;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222.2 84% 4.9%;
+    --sidebar-primary: 201 100% 40%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 210 40% 96.1%;
+    --sidebar-accent-foreground: 222.2 47.4% 11.2%;
+    --sidebar-border: 214.3 31.8% 91.4%;
+    --sidebar-ring: 201 100% 40%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 201 100% 40%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 199 100% 37%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 199 84% 43%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 201 100% 40%;
+    
+    --sidebar-background: 222.2 84% 4.9%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 201 100% 40%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 217.2 32.6% 17.5%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217.2 32.6% 17.5%;
+    --sidebar-ring: 201 100% 40%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  /* Custom glass card */
+  .glass-card {
+    @apply bg-white/50 backdrop-blur-md border border-white/20 shadow-sm;
+  }
+
+  .dark .glass-card {
+    @apply bg-gray-900/50 backdrop-blur-md border border-gray-800/50;
+  }
+
+  /* Smooth transitions */
+  .smooth-transition {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-700 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400 dark:bg-gray-600;
+  }
+}
+
+@layer components {
+  .dashboard-card {
+    @apply glass-card rounded-xl p-5 transition-all duration-300 hover:shadow-md;
+  }
+
+  .nav-link {
+    @apply flex items-center space-x-2 px-3 py-2 rounded-lg text-gray-600 hover:text-medical-primary hover:bg-medical-light dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800 transition-all duration-200;
+  }
+
+  .nav-link.active {
+    @apply bg-medical-light text-medical-primary dark:bg-gray-800 dark:text-white font-medium;
+  }
+
+  .status-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .btn-primary {
+    @apply bg-medical-primary hover:bg-medical-dark text-white rounded-lg px-4 py-2 transition-colors duration-200;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-100 hover:bg-gray-200 text-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200 rounded-lg px-4 py-2 transition-colors duration-200;
+  }
+
+  .btn-outline {
+    @apply border border-medical-primary text-medical-primary hover:bg-medical-light rounded-lg px-4 py-2 transition-colors duration-200;
+  }
+
+  .btn-success {
+    @apply bg-alert-success hover:bg-green-600 text-white rounded-lg px-4 py-2 transition-colors duration-200;
+  }
+
+  .btn-warning {
+    @apply bg-alert-warning hover:bg-amber-600 text-white rounded-lg px-4 py-2 transition-colors duration-200;
+  }
+
+  .btn-danger {
+    @apply bg-alert-critical hover:bg-red-600 text-white rounded-lg px-4 py-2 transition-colors duration-200;
+  }
+}
